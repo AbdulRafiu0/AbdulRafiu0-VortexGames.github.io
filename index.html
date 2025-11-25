@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Vortex Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            
+            --primary-color: #007bff;
+            --dark-bg: #18191C;         
+            --mid-dark: #2D323A;        
+            --text-color: #ffffff;      
+            --sub-text-color: #aaaaaa;  
+            --border-color: #3d424a;    
+        }
+
+        
+        body#page-welcome {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        
+  .navbar {
+            background-color: var(--mid-dark); 
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+  .brand {
+            font-family: 'Play', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+  .brand span {
+            color: var(--primary-color);
+        }
+        
+  .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+  .nav-links a:hover {
+            color: var(--primary-color); 
+        }
+
+        
+  .welcome-container {
+            flex-grow: 1; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+  .welcome-hero {
+            max-width: 600px;
+            padding: 40px;
+            background: var(--mid-dark); 
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); 
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+  .hero-title {
+            font-family: 'Play', sans-serif;
+            font-size: 3.5rem;
+            color: var(--text-color); 
+            margin-bottom: 10px;
+        }
+
+  .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--sub-text-color);
+            margin-bottom: 40px;
+        }
+        
+        
+  .auth-buttons-group a {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 20px 10px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+  .btn-primary {
+            background-color: var(--primary-color); 
+            color: #ffffff!important;
+            border: 2px solid var(--primary-color);
+        }
+
+  .btn-primary:hover {
+            background-color: #0056b3; 
+        }
+
+  .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color)!important; 
+            border: 2px solid var(--primary-color);
+        }
+
+  .btn-secondary:hover {
+            background-color: #2e2e2e; 
+            border-color: #0056b3; 
+        }
+    </style>
+</head>
+<body id="page-welcome">
+    <nav class="navbar">
+        <div class="brand">VORTEX <span>GAMES</span></div>
+        <div class="nav-links">
+            <a href="library unauth.html">Store</a>
+            <a href="support unauth.html">Support</a>
+<a href="company unauth.html">About Us</a>
+		<a href="legal unauth.html">Legal</a>
+        </div>
+    </nav>
+
+    <main class="welcome-container">
+        <div class="welcome-hero">
+            <h1 class="hero-title">Enter the Vortex</h1>
+            <p class="hero-subtitle">Your next dimension of immersive gaming awaits.</p>
+            
+            <div class="auth-buttons-group">
+                <a href="login.html" class="btn-full btn-primary">Login</a>
+                <a href="signup.html" class="btn-secondary">Create Account</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>

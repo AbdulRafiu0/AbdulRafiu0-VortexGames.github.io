@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Vortex Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body id="page-myaccount">
+    <nav class="navbar">
+        <div class="brand">VORTEX <span>GAMES</span></div>
+        <div class="nav-links">
+            <a href="library.html">Store</a>
+<a href="legal.html">Legal</a>
+<a href="company.html">About Us</a>
+            <a href="community.html">Community</a>
+            <a href="support.html">Support</a>
+            <a href="#" onclick="Auth.logout()" style="color: var(--primary); font-weight: bold;">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section>
+            <h1 class="page-title">Commander Profile</h1>
+            <div class="profile-header">
+                <div class="avatar" id="user-avatar">?</div>
+                <div class="user-details">
+                    <h2 id="user-name">Loading...</h2>
+                    <p id="user-email">...</p>
+                    <p id="user-date" style="color: var(--text-muted); margin-top: 10px; font-size: 0.9rem;">...</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="page-title" style="font-size: 1.5rem;">My Library</h2>
+            <div class="game-grid">
+                <div class="game-card">
+                    <img src="gtav.jpg" class="card-img" alt="Official cover art for the game Grand Theft Auto">
+                    <div class="card-info">
+                        <h3 class="card-title">Grand Theft Auto</h3>
+                        <button class="btn-full">Install</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
