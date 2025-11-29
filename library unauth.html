@@ -4,35 +4,235 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library - Vortex Games</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* --- GLOBAL VARIABLES & RESET --- */
+        :root {
+            --bg-dark: #0f1014;
+            --bg-panel: #1a1c23;
+            --bg-input: #252830;
+            --primary: #0078f2;  /* Blue */
+            --accent: #baff29;   /* Neon Lime */
+            --text-main: #ffffff;
+            --text-muted: #949ba4;
+            --nav-height: 70px;
+            --radius: 8px;
+            --transition: 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        body { font-family: 'Roboto', sans-serif; background: var(--bg-dark); color: var(--text-main); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+
+        /* --- NAVIGATION --- */
+        .navbar {
+            height: var(--nav-height);
+            background: rgba(15, 16, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .brand { font-family: 'Play', sans-serif; font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; color: var(--text-main); }
+        .brand span { color: var(--primary); }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
+        .nav-links a:hover,.nav-links a.active { color: var(--primary); }
+        .btn-nav { padding: 8px 20px; background: var(--primary); border-radius: 4px; color: white!important; font-weight: bold; }
+        .btn-nav:hover { background: #0060c2; }
+
+        /* --- SLIDESHOW STYLES --- */
+        .slideshow-container {
+            max-width: 100%;
+            position: relative;
+            margin: 0 auto 40px auto;
+            overflow: hidden;
+            height: 500px; /* Fixed height */
+        }
+
+        .mySlides {
+            display: none;
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .slide-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6); 
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 20%;
+            left: 5%;
+            color: #f2f2f2;
+            max-width: 600px;
+            z-index: 10;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .slide-caption h2 {
+            font-family: 'Play', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .slide-caption p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #eee;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            margin-top: -22px;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            background-color: rgba(0,0,0,0.2);
+            z-index: 15;
+        }
+        .next { right: 0; border-radius: 3px 0 0 3px; }
+        .prev:hover, .next:hover { background-color: rgba(0,0,0,0.8); }
+
+        .dots-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            display: flex;
+            gap: 10px;
+        }
+        .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        .active-dot, .dot:hover { background-color: var(--accent); }
+        .fade { animation-name: fade; animation-duration: 1.5s; }
+        @keyframes fade { from {opacity: .4} to {opacity: 1} }
+
+        /* --- LAYOUTS --- */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .page-title { font-family: 'Play', sans-serif; font-size: 2.5rem; margin-bottom: 30px; border-left: 5px solid var(--accent); padding-left: 15px; }
+
+        /* --- BUTTONS --- */
+        .btn-full { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-full:hover { background: #0060c2; }
+        .btn-hero { width: auto; padding: 12px 30px; font-size: 1.1rem; }
+
+        /* --- LIBRARY GRID --- */
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        .game-card { background: var(--bg-panel); border-radius: var(--radius); overflow: hidden; transition: transform 0.2s; position: relative; display: flex; flex-direction: column;}
+        .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card-img { width: 100%; height: 300px; object-fit: cover; background: #333; }
+        .card-info { padding: 15px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+        .card-title { margin: 0 0 10px; font-size: 1.1rem; color: var(--text-main); }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+           .nav-links { display: none; } 
+           .slideshow-container { height: 300px; }
+           .slide-caption h2 { font-size: 1.8rem; }
+           .btn-hero { padding: 8px 20px; font-size: 0.9rem; }
+        }
+    </style>
 </head>
 <body id="page-library">
+
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="brand">VORTEX <span>GAMES</span></div>
         <div class="nav-links">
             <a href="library unauth.html" class="active">Store</a>
             <a href="community unauth.html">Community</a>
-<a href="legal unauth.html">Legal</a>
-<a href="company unauth.html">About Us</a>
+            <a href="legal unauth.html">Legal</a>
+            <a href="company unauth.html">About Us</a>
             <a href="support unauth.html">Support</a>
             <a href="login.html" class="btn-nav">Sign In</a>
         </div>
     </nav>
 
-        <div class="container">
+    <!-- SLIDESHOW SECTION -->
+    <div class="slideshow-container">
+        
+        <!-- Slide 1 -->
+        <div class="mySlides fade">
+            <img src="gtav.jpg" onerror="this.src='https://placehold.co/1200x500/1a1a1a/FFF?text=Grand+Theft+Auto+V&font=play'" class="slide-img" alt="GTA V">
+            <div class="slide-caption">
+                <h2>Grand Theft Auto V</h2>
+                <p>Join the fun in Los Santos. Sign in to purchase.</p>
+                <a href="login.html"><button class="btn-full btn-hero" style="background-color: var(--accent); color: #000;">Sign In Now</button></a>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="mySlides fade">
+            <img src="Stellaris_ Dawn of Titans.jpg" onerror="this.src='https://placehold.co/1200x500/2a0a3b/FFF?text=Stellaris:+Dawn+of+Titans&font=play'" class="slide-img" alt="Stellaris">
+            <div class="slide-caption">
+                <h2>Stellaris: Dawn of Titans</h2>
+                <p>The galaxy awaits. Begin your journey today.</p>
+                <a href="login.html"><button class="btn-full btn-hero">Explore</button></a>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="mySlides fade">
+            <img src="DOOM_The_Dark_Ages.jpg" onerror="this.src='https://placehold.co/1200x500/520f0f/FFF?text=DOOM:+The+Dark+Ages&font=play'" class="slide-img" alt="Doom">
+            <div class="slide-caption">
+                <h2>DOOM: The Dark Ages</h2>
+                <p>Rip and tear until it is done.</p>
+                <a href="login.html"><button class="btn-full btn-hero" style="background-color: #d90429;">Pre-Order</button></a>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+        <div class="dots-container">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
         <h1 class="page-title">Game Catalog</h1>
         <div id="library-grid" class="game-grid">
             <div class="game-card">
-                <img src="gtav.jpg" class="card-img" alt="Official cover art for the game Grand Theft Auto V">
+                <img src="gtav.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=GTA+V'" alt="Official cover art for the game Grand Theft Auto V">
                 <div class="card-info">
                     <h3 class="card-title">Grand Theft Auto V</h3>
                    <button class="btn-full">Purchase</button>
                 </div>
             </div>
-            
+
             <div class="game-card">
-                <img src="Stellaris_ Dawn of Titans.jpg" class="card-img" alt="Cover art for the space strategy game Stellaris: Dawn of Titans">
+                <img src="Stellaris_ Dawn of Titans.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Stellaris'" alt="Cover art for the space strategy game Stellaris: Dawn of Titans">
                 <div class="card-info">
                     <h3 class="card-title">Stellaris: Dawn of Titans</h3>
                     <button class="btn-full">Purchase</button>
@@ -40,29 +240,29 @@
             </div>
 
             <div class="game-card">
-                <img src="Cybernetic Edge.jpg" class="card-img" alt="Cover art for the cyberpunk action RPG Cybernetic Edge">
+                <img src="Cybernetic Edge.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Cybernetic+Edge'" alt="Cover art for the cyberpunk action RPG Cybernetic Edge">
                 <div class="card-info">
                     <h3 class="card-title">Cybernetic Edge</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
-            
+
             <div class="game-card">
-                <img src="Realm of Mages.jpg" class="card-img" alt="Cover art for the fantasy role-playing game Realm of Mages">
+                <img src="Realm of Mages.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Realm+of+Mages'" alt="Cover art for the fantasy role-playing game Realm of Mages">
                 <div class="card-info">
                     <h3 class="card-title">Realm of Mages</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="rdr2.jpg" class="card-img" alt="rdr2">
+                <img src="rdr2.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Red+Dead+2'" alt="rdr2">
                 <div class="card-info">
                     <h3 class="card-title">Red Dead Redemption 2</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="fc26.jpg" class="card-img" alt="fc26">
+                <img src="fc26.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=FC+26'" alt="fc26">
                 <div class="card-info">
                     <h3 class="card-title">EA Sports FC 26</h3>
                     <button class="btn-full">Purchase</button>
@@ -70,138 +270,177 @@
             </div>
 
             <div class="game-card">
-                <img src="Detroit_Become_Human.jpg" class="card-img" alt="Detroit_Become_Human">
+                <img src="Detroit_Become_Human.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Detroit'" alt="Detroit_Become_Human">
                 <div class="card-info">
                     <h3 class="card-title">Detroit Become Human</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="DOOM_The_Dark_Ages.jpg" class="card-img" alt="DOOM_The_Dark_Ages/?">
+                <img src="DOOM_The_Dark_Ages.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=DOOM'" alt="DOOM_The_Dark_Ages/?">
                 <div class="card-info">
                     <h3 class="card-title">DOOM The Dark Ages</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="Battlefield6.jpg" class="card-img" alt="Battlefield™ 6">
+                <img src="Battlefield6.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Battlefield+6'" alt="Battlefield™ 6">
                 <div class="card-info">
                     <h3 class="card-title">Battlefield™ 6</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="Warhammer 40000 Space Marine2.jpg" class="card-img" alt="Warhammer 40,000: Space Marine 2">
+                <img src="Warhammer 40000 Space Marine2.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Space+Marine+2'" alt="Warhammer 40,000: Space Marine 2">
                 <div class="card-info">
                     <h3 class="card-title">Warhammer 40,000: Space Marine 2</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="Ghost of Tsushima DIRECTOR'S CUT.jpg" class="card-img" alt="Ghost of Tsushima DIRECTOR'S CUT">
+                <img src="Ghost of Tsushima DIRECTOR'S CUT.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Ghost+of+Tsushima'" alt="Ghost of Tsushima DIRECTOR'S CUT">
                 <div class="card-info">
                     <h3 class="card-title">Ghost of Tsushima DIRECTOR'S CUT</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="It Takes Two.jpg" class="card-img" alt="It Takes Two">
+                <img src="It Takes Two.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=It+Takes+Two'" alt="It Takes Two">
                 <div class="card-info">
                     <h3 class="card-title">It Takes Two</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="Forza Horizon 5.jpg" class="card-img" alt="Forza Horizon 5">
+                <img src="Forza Horizon 5.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Forza+Horizon+5'" alt="Forza Horizon 5">
                 <div class="card-info">
                     <h3 class="card-title">Forza Horizon 5</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="Marvel’s Spider-Man Remastered.jpg" class="card-img" alt="Marvel’s Spider-Man Remastered">
+                <img src="Marvel’s Spider-Man Remastered.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Spider-Man'" alt="Marvel’s Spider-Man Remastered">
                 <div class="card-info">
                     <h3 class="card-title">Marvel’s Spider-Man Remastered</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="Hogwarts Legacy.jpg" class="card-img" alt="Hogwarts Legacy">
+                <img src="Hogwarts Legacy.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Hogwarts+Legacy'" alt="Hogwarts Legacy">
                 <div class="card-info">
                     <h3 class="card-title">Hogwarts Legacy</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="Split Fiction.jpg" class="card-img" alt="Split Fiction">
+                <img src="Split Fiction.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Split+Fiction'" alt="Split Fiction">
                 <div class="card-info">
                     <h3 class="card-title">Split Fiction</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="God of War.jpg" class="card-img" alt="God of War">
+                <img src="God of War.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=God+of+War'" alt="God of War">
                 <div class="card-info">
                     <h3 class="card-title">God of War</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="The Elder Scrolls IV Oblivion Remastered.jpg" class="card-img" alt="The Elder Scrolls IV: Oblivion Remastered">
+                <img src="The Elder Scrolls IV Oblivion Remastered.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Oblivion'" alt="The Elder Scrolls IV: Oblivion Remastered">
                 <div class="card-info">
                     <h3 class="card-title">The Elder Scrolls IV: Oblivion Remastered</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
                        <div class="game-card">
-                <img src="SILENT HILL f.jpg" class="card-img" alt="SILENT HILL f">
+                <img src="SILENT HILL f.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Silent+Hill'" alt="SILENT HILL f">
                 <div class="card-info">
                     <h3 class="card-title">SILENT HILL f</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="UNCHARTED™ Legacy of Thieves Collection.jpg" class="card-img" alt="UNCHARTED™: Legacy of Thieves Collection">
+                <img src="UNCHARTED™ Legacy of Thieves Collection.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Uncharted'" alt="UNCHARTED™: Legacy of Thieves Collection">
                 <div class="card-info">
                     <h3 class="card-title">UNCHARTED™: Legacy of Thieves Collection</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="F1® 25.jpg" class="card-img" alt="F1® 25">
+                <img src="F1® 25.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=F1+25'" alt="F1® 25">
                 <div class="card-info">
                     <h3 class="card-title">F1® 25</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="DAVE THE DIVER.jpg" class="card-img" alt="DAVE THE DIVER">
+                <img src="DAVE THE DIVER.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=Dave+The+Diver'" alt="DAVE THE DIVER">
                 <div class="card-info">
                     <h3 class="card-title">DAVE THE DIVER</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
             <div class="game-card">
-                <img src="NBA 2K26.jpg" class="card-img" alt="NBA 2K26">
+                <img src="NBA 2K26.jpg" class="card-img" onerror="this.src='https://placehold.co/400x600/252830/FFF?text=NBA+2K26'" alt="NBA 2K26">
                 <div class="card-info">
                     <h3 class="card-title">NBA 2K26</h3>
                     <button class="btn-full">Purchase</button>
                 </div>
             </div>
 
-
-            
         </div>
     </div>
 
-    <script src="main.js"></script>
-</body>
-</html>
+    <!-- Scripts -->
+    <script>
+        // --- SLIDESHOW LOGIC ---
+        let slideIndex = 1;
+        let autoSlideTimer;
 
+        // Initialize
+        showSlides(slideIndex);
+        startAutoSlide();
+
+        // Next/previous controls
+        function plusSlides(n) {
+            clearInterval(autoSlideTimer); // Reset timer on manual interaction
+            showSlides(slideIndex += n);
+            startAutoSlide(); // Restart timer
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            clearInterval(autoSlideTimer);
+            showSlides(slideIndex = n);
+            startAutoSlide();
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
             
-        </div>
-    </div>
+            if (n > slides.length) {slideIndex = 1}    
+            if (n < 1) {slideIndex = slides.length}
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active-dot", "");
+            }
+            
+            slides[slideIndex-1].style.display = "block";  
+            dots[slideIndex-1].className += " active-dot";
+        }
 
-    <script src="main.js"></script>
+        function startAutoSlide() {
+            autoSlideTimer = setInterval(function() {
+                plusSlides(1);
+            }, 5000); // Change image every 5 seconds
+        }
+    </script>
 </body>
 </html>
+
